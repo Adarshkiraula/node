@@ -7,8 +7,14 @@ var mongoose=require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+const cloudinary = require('cloudinary');
 var app = express();
+
+cloudinary.config({
+cloud_name: 'downvkqz5',
+api_key: '267675618567414',
+api_secret: '-DHqbYHxIVuGBOT4Gzrbzxx8Vxg'
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +38,13 @@ mongoose.connect('mongodb+srv://test:test123@cluster0-8tred.mongodb.net/test?ret
   console.log("Database Connected!");
   }
 });
+// mongoose.connect('mongodb://adarshkiraula:adarshkiraula@192.168.0.5/adarshkiraula', 
+// { useNewUrlParser: true,useUnifiedTopology: true },
+// (err,result)=>{
+//   if(result){
+//     console.log("Connected To Database")
+//   }
+// })
 
 
 // catch 404 and forward to error handler

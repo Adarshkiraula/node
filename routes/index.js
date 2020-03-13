@@ -1,41 +1,25 @@
-
-
 var express = require('express');
 var router = express.Router();
-
+const model = require('../model/user');
 const commonController=require('../controller/commonController');
 
-/* GET home page. */
-//router.get('/', function(req, res, next) {
- // res.render('index.html');
-//});
-
-
-/* GET Route */
 router.get('/',function(req,res){
   res.render('login.html');
 });
-
-
-
- router.get('/adduser',commonController.checkauth,commonController.checkType,function(req,res){
-  
+router.get('/adduser',commonController.checkauth,commonController.checkType,function(req,res){
   res.render('userregister.html');
  });
 
  router.get('/addsubadmin',commonController.checkauth,commonController.checkType,function(req,res){
-  
   res.render('subadminregister.html');
 });
-// router.post('/register',commonController.register);
+//router.post('/register',commonController.register);
 router.post('/registeruser',commonController.checkauth,commonController.registeruser);
 
- router.post('/registersubadmin',commonController.checkauth,commonController.registersubadmin);
+router.post('/registersubadmin',commonController.checkauth,commonController.registersubadmin);
 
 router.post('/login',commonController.login);
 
-
-//
 router.get('/userview',commonController.checkauth,commonController.userview);
  
 router.get('/subadminview',commonController.checkauth,commonController.subadminview);
@@ -46,7 +30,6 @@ router.post('/update',commonController.checkauth,commonController.checkType,comm
 
 router.get('/delete/:id',commonController.checkauth,commonController.checkType,commonController.del)
 
-/////
 router.get('/forgotpassword',function(req,res)
 {
   res.render('forgot.html');
@@ -54,15 +37,9 @@ router.get('/forgotpassword',function(req,res)
 
 router.post('/forgotsave',commonController.forgot,commonController.forgotsave);
 
-///subadmin passwd change
 router.get('/change/:id',commonController.checkauth,commonController.checkType,commonController.changepassword)
 router.post('/resetsapass',commonController.resetsapass);
-////////
 
-
-
-
-///change passwd button index
 router.get('/adminchangepswd',function(req,res)
 {
   res.render('changeadminpwd.html');
@@ -82,15 +59,16 @@ router.get('/logout',(req,res)=>{
 
 router.get('/notauthorized',commonController.checkauth,(req,res)=>{
   msg="not Authorized";
-  res.render('index.html',{msg})
+  pic=req.profilepic,
+  name=req.name
+  res.render('index.html',{msg,pic,name})
 })
 
-
-router.get('/imageupload',function(req,res)
+router.get('/imageupload',commonController.checkauth,function(req,res)
 {
   res.render('imageupload.html');
 })
-router.post('/imageuploadsave',commonController.imageuploadsave);
+router.post('/imageuploadsave',commonController.checkauth,commonController.imageuploadsave);
 
 module.exports = router;
 

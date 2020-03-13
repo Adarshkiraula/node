@@ -63,8 +63,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             
-            <a class="collapse-item" href="http://localhost:3000/adduser">Add User</a>
-            <a class="collapse-item" href="http://localhost:3000/addsubadmin">Add SubAdmin</a>
+            <a class="collapse-item" href="/adduser">Add User</a>
+            <a class="collapse-item" href="/addsubadmin">Add SubAdmin</a>
           </div>
         </div>
       </li>
@@ -78,23 +78,29 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             
-            <a class="collapse-item" href="http://localhost:3000/userview">User</a>
-            <a class="collapse-item" href="http://localhost:3000/subadminview">Sub Admin</a>
+            <a class="collapse-item" href="/userview">User</a>
+            <a class="collapse-item" href="/subadminview">Sub Admin</a>
           </div>
         </div>
       </li>
           
 <!-- change password -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="http://localhost:3000/adminchangepswd" >
+        <a class="nav-link collapsed" href="/adminchangepswd" >
           <i class="fas fa-fw fa-wrench"></i>
           <span>Change Password</span>
         </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link collapsed" href="http://localhost:3000/logout">
+          <a class="nav-link collapsed" href="/logout">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Logout</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="/imageupload">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Upload Profile Pic</span>
           </a>
         </li>
 
@@ -265,8 +271,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=name%></span>
+                 <img class="img-profile rounded-circle" src="<%=pic %>">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

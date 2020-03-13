@@ -63,8 +63,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             
-            <a class="collapse-item" href="http://localhost:3000/adduser">Add User</a>
-            <a class="collapse-item" href="http://localhost:3000/addsubadmin">Add SubAdmin</a>
+            <a class="collapse-item" href="/adduser">Add User</a>
+            <a class="collapse-item" href="/addsubadmin">Add SubAdmin</a>
           </div>
         </div>
       </li>
@@ -78,13 +78,13 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             
-            <a class="collapse-item" href="http://localhost:3000/userview">User</a>
-            <a class="collapse-item" href="http://localhost:3000/subadminview">Sub Admin</a>
+            <a class="collapse-item" href="/userview">User</a>
+            <a class="collapse-item" href="/subadminview">Sub Admin</a>
           </div>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="http://localhost:3000/logout">
+        <a class="nav-link collapsed" href="/logout">
           <i class="fas fa-fw fa-wrench"></i>
           <span>Logout</span>
         </a>
@@ -149,11 +149,11 @@
                     </th>
                     <th>
                         <% for (var i =0; i<juser.length ;  i++ ) { %>
-                        <br /><a style="color:blue" href="http://localhost:3000/modify/<%=juser[i]['_id'] %>"
+                        <br /><a style="color:blue" href="/modify/<%=juser[i]['_id'] %>"
                             name="id">Update</a>
-                        <a class="ml-3" style="color: red" href="http://localhost:3000/delete/<%=juser[i]['_id'] %>"
+                        <a class="ml-3" style="color: red" href="/delete/<%=juser[i]['_id'] %>"
                             name="id">Delete </a>
-                            <a class="ml-3" style="color: green" href="http://localhost:3000/change/<%=juser[i]['_id'] %>"
+                            <a class="ml-3" style="color: green" href="/change/<%=juser[i]['_id'] %>"
                               name="id">Change Password </a>
                         <% } %>
 

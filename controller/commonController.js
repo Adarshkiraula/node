@@ -6,8 +6,9 @@ var generator = require('generate-password');
 const bcrypt = require('bcrypt');
 SALT_WORK_FACTOR = 10;
 const alert=require('alert-node');
-var formidable = require('formidable');
-const path = require('path');
+const formidable = require('formidable');
+const cloudinary = require('cloudinary');
+const path =require('path')
 
 //const sha1 = require('sha1');
 var msg = "";
@@ -59,8 +60,8 @@ function eMail2(email,link,cb) {
         from: 'munjal.chirag.test@gmail.com',
         to: email,
         subject: "Registration",
-        // html:'<p>Click <a href="https://sdirect-adarsh.herokuapp.com/recover/'+link+'">here</a> to reset your password</p>'
-        html:'<p>Click <a href="http://localhost:3000/recover/'+link+'">here</a> to reset your password</p>'
+         html:'<p>Click <a href="https://sdirect-adarsh.herokuapp.com/recover/'+link+'">here</a> to reset your password</p>'
+         //html:'<p>Click <a href="http://localhost:3000/recover/'+link+'">here</a> to reset your password</p>'
      };
     
         transporter.sendMail(mailOptions, function (err, info) {
@@ -152,7 +153,9 @@ function login(req,res)
                             }
                             else{
                                 console.log("Received Token",token);
-                                res.cookie('name',token).render('index.html',{msg});
+                                let name=data.name;
+                                let pic=data.profilepic
+                                res.cookie('name',token).render('index.html',{msg,pic,name});
                             }
                         });
                         
@@ -165,7 +168,9 @@ function login(req,res)
                             }
                             else{
                                 console.log("Received Token",token);
-                                res.cookie('name',token).render('index.html',{msg});
+                                let name=data.name;
+                                let pic=data.profilepic
+                                res.cookie('name',token).render('index.html',{msg,pic,name});
                             }
                         });
                         
@@ -214,13 +219,12 @@ function registersubadmin(req,res)
         }
         else {
              msg = "Registered Succesfully"
-           
             console.log(data)
-           
-            //
              eMail(email,password);
             // console.log(data);
-            res.render('index.html');
+            let name=data.name;
+            let pic=data.profilepic
+            res.render('index.html',{pic,name});
         }
     })
 }
@@ -251,7 +255,9 @@ function registeruser(req, res) {
             // res.json("Registered");
            // console.log(data);
            eMail(email,password);
-            res.render('index.html');
+           let name=req.name;
+           let pic=req.profilepic
+            res.render('index.html',{pic,name});
         }
     })
 
@@ -285,7 +291,20 @@ function checkauth(req,res,next)
         console.log(data.role);
         req.type=data.role
         req.id=data.id;
-        next();
+        model.findOne({'_id':data.id},(err,result)=>
+        {
+
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log(result);
+                req.pic = result.profilepic;
+                req.name = result.name;
+                next();
+            }
+        })
+        
     }
 })
 }
@@ -404,7 +423,7 @@ function subadminview(req, res) {
         }
     
     }
-   
+    
     function resetsapass(req, res) {
         let id = req.body.id;
         console.log(id);
@@ -424,16 +443,14 @@ function subadminview(req, res) {
                         console.log(err)
                     }
                     else{
-                        msg="Subadmin Password Changed"
-                        res.render('index.html',{msg})
+                        msg="Subadmin Password Changed";
+                        let name=req.name;
+                        let pic=req.profilepic
+                        res.render('index.html',{msg,pic,name})
                     }
                 })
             }
-        })
-        
- 
-       
-            
+        })      
     }
     function resetpass(req, res) {
         let mail = req.body.email;
@@ -465,7 +482,6 @@ function subadminview(req, res) {
                              }
                              else 
                              {
-                                 
                                  data.passwordreset=token;
                                  data.save((err)=>{
                                      if(err){
@@ -507,7 +523,7 @@ function subadminview(req, res) {
             }
         });
     }
-function forgotsave(req,res){           //forgot password
+function forgotsave(req,res){          
     let email = req.body.email;
     console.log("@@@@@@@@@@@@@@"+email);
     let newpass = req.newpass;
@@ -530,7 +546,7 @@ function forgotsave(req,res){           //forgot password
 
 
 
-function forgot(req, res, next) {            //forgot password
+function forgot(req, res, next) {           
     let password = generator.generate({
         length: 10
     })
@@ -551,7 +567,7 @@ function forgot(req, res, next) {            //forgot password
         })
     })
 }
-function changepassword(req,res)          //subadmin change password
+function changepassword(req,res)          
 {
     let id=req.params.id;
     model.findOne({'_id':id},function (err,data) {
@@ -565,25 +581,6 @@ function changepassword(req,res)          //subadmin change password
             res.render('change.html',{id,email,name});
         }  
     })
-    // let id = req.params.id;
-    // console.log("*******"+id);
-    // model.findOne({'_id':id},(err,data)=>{
-    //     if(err){
-    //         console.log(err)
-    //     }
-    //     else{
-            
-    //         let oldpassword=data.oldpassword;
-    //         let id=data.id;
-    //         let role=data.role;
-    //         let newpassword=data.newpassword;
-    //         let confirmpassword=data.confirmpassword;
-            
-            
-            
-    //         res.render('change.html',{oldpassword,id,newpassword,confirmpassword});
-    //     }
-    // })
 }
 
 function changelinkpass(req,res){
@@ -632,7 +629,7 @@ function respass(req,res){
     
     
     }
-function passwordsave(req,res)             //admin change password
+function passwordsave(req,res)       
 {
     let id=req.id;
     console.log(id)
@@ -659,7 +656,9 @@ function passwordsave(req,res)             //admin change password
                        else{
                            msg="Password Changed";
                           // eMail(email,npass);
-                            res.render('index.html',{msg});
+                          let name=req.name;
+                          let pic=req.profilepic;
+                            res.render('index.html',{msg,pic,name});
                        }
                    })
                 }
@@ -721,24 +720,50 @@ function checkreset(req,res,next){
             })
         }
     }
-    
 
-    function imageuploadsave(req,res)
-    {
-        var form = new formidable.IncomingForm();
-        
-            form.parse(req);
-        
-            form.on('fileBegin', function (name, file){
-                file.path = __dirname + '/data/' + file.name;
+function imageuploadsave(req,res)
+{
+    var form = new formidable.IncomingForm();
+    
+        form.parse(req);
+    
+        form.on('fileBegin', function (name, file) {
+            file.path = path.join(__dirname, '../public/img/') + file.name;
+            console.log('>>>>>>>>>>>>>', path.join(__dirname, '../public/img/'));
+        });
+    
+        form.on('file', function (name, file) {
+            cloudinary.v2.uploader.upload(file.path, function (error, result) {
+                if (error) {
+                    console.log("error:", error);
+                }
+                else
+                    console.log("Result:", result);
+                console.log(req.id);
+                model.findOne({ '_id': req.id }, (err, data) => {
+                    if (err) {
+                       console.log(err);
+                    }
+                    else if (data == null) {
+                        alert("error");
+    
+                    }
+                    else {
+                        data.profilepic = result.url;
+                        data.save((err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                msg = "File Uploaded";
+                                alert(msg);
+                                res.redirect('/');
+                            }
+                        })
+    
+                    }
+                })
+    
             });
-        
-            form.on('file', function (name, file){
-                console.log('Uploaded ' + file.name);
-            });
-        
-            return res.json(200, {
-                                    result: 'Upload Success'
-            });
-        
-    }
+        });
+}

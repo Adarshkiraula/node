@@ -8,11 +8,12 @@ const UserSchema = new Schema({
 	email:{type:String},
     password : String,
     role:{type:String,
-            enum:['admin','subadmin','user'],
+            enum:['admin','subadmin','user']
            // default:'user'
         },
     is_deleted:{type:Boolean,default:false} ,
-    passwordreset:String       
+    passwordreset:String,
+    profilepic:String       
 });
 
 UserSchema.pre('save', function(next) {
